@@ -50,4 +50,9 @@
     --secondary-btn-hover: rgba(255, 255, 255, 0.08);
     --ghost-btn-hover: rgba(255, 255, 255, 0.04);
   }
+
+  .glass-pattern {
+    background-image: radial-gradient(var(--text-main) 1px, transparent 1px);
+    background-size: 16px 16px;
+  }
 }
