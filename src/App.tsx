@@ -201,20 +201,21 @@ function GlassButton({
   variant = 'primary', 
   size = 'md', 
   loading = false, 
+  disabled = false,
   LeftIcon, 
   RightIcon, 
   className = '', 
   children, 
   ...props 
 }: any) {
-  const baseClasses = "inline-flex items-center justify-center font-semibold rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[var(--bg-color)] disabled:opacity-50 disabled:pointer-events-none";
+  const baseClasses = "inline-flex items-center justify-center font-semibold rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[var(--bg-color)] disabled:opacity-50 disabled:pointer-events-none hover:-translate-y-[1px] hover:shadow-md active:translate-y-[0px] active:scale-[0.98]";
   
   const variants = {
-    primary: "border border-white/20 bg-[#6366f1] text-[var(--primary-btn-text)] shadow-[0_0_20px_rgba(99,102,241,0.15)] hover:bg-indigo-400 focus:ring-indigo-400",
-    secondary: "border border-[var(--glass-border)] bg-[var(--secondary-btn-bg)] text-[var(--text-main)] hover:bg-[var(--secondary-btn-hover)] focus:ring-[var(--glass-border-hover)]",
+    primary: "border border-white/20 bg-[#6366f1] text-[var(--primary-btn-text)] shadow-[0_0_20px_rgba(99,102,241,0.15)] hover:bg-indigo-400 hover:shadow-[0_4px_25px_rgba(99,102,241,0.25)] focus:ring-indigo-400",
+    secondary: "border border-[var(--glass-border)] bg-[var(--secondary-btn-bg)] text-[var(--text-main)] hover:bg-[var(--secondary-btn-hover)] hover:border-[var(--glass-border-hover)] focus:ring-[var(--glass-border-hover)]",
     ghost: "border border-transparent bg-transparent text-[var(--text-muted)] hover:bg-[var(--ghost-btn-hover)] hover:text-[var(--text-main)] focus:ring-[var(--glass-border-hover)]",
-    destructive: "border border-rose-500/30 bg-rose-500/20 text-rose-500 hover:bg-rose-500/30 focus:ring-rose-500",
-    link: "border-transparent bg-transparent text-[#6366f1] hover:underline underline-offset-4 focus:ring-[#6366f1]"
+    destructive: "border border-rose-500/30 bg-rose-500/20 text-rose-500 hover:bg-rose-500/30 hover:border-rose-500/40 focus:ring-rose-500",
+    link: "border-transparent bg-transparent text-[#6366f1] hover:underline underline-offset-4 focus:ring-[#6366f1] hover:-translate-y-0 hover:shadow-none active:scale-100"
   };
 
   const sizes = {
@@ -224,10 +225,13 @@ function GlassButton({
     icon: "h-11 w-11 p-0"
   };
 
+  const isDisabled = loading || disabled;
+
   return (
     <button 
       className={`${baseClasses} ${variants[variant as keyof typeof variants]} ${sizes[size as keyof typeof sizes]} ${className}`}
-      disabled={loading}
+      disabled={isDisabled}
+      aria-disabled={isDisabled}
       {...props}
     >
       {loading && (
@@ -314,11 +318,19 @@ function GlassSpinner({ size = 'md', className = '' }: any) {
   );
 }
 
-function GlassIconButton({ className = '', variant = 'secondary', onClick, children, ...props }: any) {
-  const baseClasses = "w-10 h-10 rounded-full flex items-center justify-center transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 flex-shrink-0";
+function GlassButtonGroup({ children, className = '' }: any) {
+  return (
+    <div className={`inline-flex items-center gap-1.5 p-1.5 rounded-[20px] border border-[var(--glass-border)] bg-[var(--input-bg)] backdrop-blur-[12px] shadow-sm ${className}`}>
+      {children}
+    </div>
+  );
+}
+
+function GlassIconButton({ className = '', variant = 'secondary', onClick, children, disabled = false, ...props }: any) {
+  const baseClasses = "w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 flex-shrink-0 disabled:opacity-50 disabled:pointer-events-none hover:-translate-y-[1px] hover:shadow-md active:translate-y-[0px] active:scale-[0.95]";
   const variants = {
-    primary: "bg-[#6366f1] border border-white/20 text-white shadow-[0_0_20px_rgba(99,102,241,0.15)] hover:bg-indigo-400 focus:ring-indigo-400 focus:ring-offset-[var(--bg-color)]",
-    secondary: "bg-[var(--secondary-btn-bg)] border border-[var(--glass-border)] text-[var(--text-main)] hover:bg-[var(--secondary-btn-hover)] focus:ring-[var(--glass-border-hover)] focus:text-[var(--text-main)] focus:ring-offset-[var(--bg-color)]",
+    primary: "bg-[#6366f1] border border-white/20 text-white shadow-[0_0_20px_rgba(99,102,241,0.15)] hover:bg-indigo-400 hover:shadow-[0_4px_25px_rgba(99,102,241,0.25)] focus:ring-indigo-400 focus:ring-offset-[var(--bg-color)]",
+    secondary: "bg-[var(--secondary-btn-bg)] border border-[var(--glass-border)] text-[var(--text-main)] hover:bg-[var(--secondary-btn-hover)] hover:border-[var(--glass-border-hover)] focus:ring-[var(--glass-border-hover)] focus:text-[var(--text-main)] focus:ring-offset-[var(--bg-color)]",
     ghost: "bg-transparent border border-transparent text-[var(--text-muted)] hover:bg-[var(--ghost-btn-hover)] hover:text-[var(--text-main)] focus:ring-[var(--glass-border-hover)] focus:ring-offset-[var(--bg-color)]"
   };
 
@@ -326,6 +338,8 @@ function GlassIconButton({ className = '', variant = 'secondary', onClick, child
     <button 
       className={`${baseClasses} ${variants[variant as keyof typeof variants]} ${className}`}
       onClick={onClick}
+      disabled={disabled}
+      aria-disabled={disabled}
       {...props}
     >
       {children}
@@ -366,9 +380,9 @@ export default function App() {
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
-    <div className={`relative w-full h-screen overflow-hidden bg-[var(--bg-color)] text-[var(--text-main)] font-sans transition-colors duration-500 ${theme === 'dark' ? 'theme-dark' : 'theme-light'}`}>
+    <div className={`relative w-full min-h-screen overflow-x-hidden bg-[var(--bg-color)] text-[var(--text-main)] font-sans transition-colors duration-500 ${theme === 'dark' ? 'theme-dark' : 'theme-light'}`}>
       {/* Atmosphere and glowing orbs */}
-      <div className="absolute inset-0 z-0 transition-opacity duration-1000">
+      <div className="fixed inset-0 z-0 transition-opacity duration-1000 pointer-events-none">
         <div 
           className="absolute inset-0 transition-all duration-1000" 
           style={{
@@ -376,10 +390,10 @@ export default function App() {
           }}
         />
         <div className="absolute -top-[100px] -right-[100px] w-[400px] h-[400px] rounded-full blur-[100px] opacity-[var(--orb-opacity)] bg-[var(--orb-1)] transition-colors duration-1000 z-[1]" />
-        <div className="absolute -bottom-[100px] -left-[100px] w-[400px] h-[400px] rounded-full blur-[100px] opacity-[calc(var(--orb-opacity)*0.4)] bg-[var(--orb-2)] transition-colors duration-1000 z-[1]" />
+        <div className="absolute top-[60%] -left-[100px] w-[400px] h-[400px] rounded-full blur-[100px] opacity-[calc(var(--orb-opacity)*0.4)] bg-[var(--orb-2)] transition-colors duration-1000 z-[1]" />
       </div>
 
-      <div className="relative z-10 flex flex-col h-full p-10 max-w-[1400px] mx-auto w-full">
+      <div className="relative z-10 flex flex-col min-h-screen p-6 lg:p-10 max-w-[1400px] mx-auto w-full">
         {/* Header */}
         <header className="flex justify-between items-center mb-12">
           <div className="flex items-center gap-3">
@@ -388,9 +402,12 @@ export default function App() {
             <span className="font-mono text-[11px] py-[2px] px-2 bg-[var(--code-bg)] border border-[var(--code-border)] rounded text-[#6366f1]">v0.4.2</span>
           </div>
           <div className="flex items-center gap-5 text-sm text-[var(--text-muted)]">
-            <span className="cursor-pointer hover:text-[var(--text-main)] transition-colors">Documentation</span>
-            <span className="cursor-pointer hover:text-[var(--text-main)] transition-colors">Playground</span>
-            <span className="text-[var(--text-main)] cursor-pointer mr-2">GitHub</span>
+            <span onClick={() => setActivePage('Introduction')} className={`cursor-pointer transition-colors ${activePage !== 'Playground' ? 'text-[var(--text-main)] font-semibold' : 'hover:text-[var(--text-main)]'}`}>Documentation</span>
+            <span onClick={() => setActivePage('Playground')} className={`cursor-pointer transition-colors ${activePage === 'Playground' ? 'text-[var(--text-main)] font-semibold' : 'hover:text-[var(--text-main)]'}`}>Playground</span>
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-[var(--text-muted)] hover:text-[var(--text-main)] transition-colors cursor-pointer mr-2 flex items-center gap-1.5">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.02c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+              GitHub
+            </a>
             
             {/* Theme Toggle Button */}
             <button 
@@ -408,8 +425,9 @@ export default function App() {
         </header>
 
         {/* Layout Grid */}
-        <div className="grid grid-cols-[280px_1fr] gap-10 grow min-h-0">
-          <aside className="flex flex-col gap-6">
+        <div className={`grid ${activePage === 'Playground' ? 'grid-cols-1' : 'grid-cols-1 lg:grid-cols-[280px_1fr]'} gap-10 grow items-start`}>
+          {activePage !== 'Playground' && (
+          <aside className="sticky top-6 flex flex-col gap-6 lg:max-h-[calc(100vh-140px)] overflow-y-auto pr-2 pb-10 custom-scrollbar">
             <div className="flex flex-col gap-2">
               <span className="text-[11px] uppercase tracking-[0.1em] text-[var(--text-muted)] mb-1 font-semibold">Get Started</span>
               <button 
@@ -444,8 +462,9 @@ export default function App() {
                 className={`px-4 py-3 rounded-[10px] text-[14px] text-left transition-all ${activePage === 'Overlays' ? 'bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-main)] backdrop-blur-[10px]' : 'border border-transparent text-[var(--text-muted)] hover:bg-[var(--secondary-btn-hover)]'}`}>Overlays (Modal, Toast)</button>
             </div>
           </aside>
+          )}
 
-          <main className="flex flex-col gap-6 relative overflow-y-auto pb-20">
+          <main className="flex flex-col gap-6 relative w-full pb-20">
             {activePage === 'Buttons' && (
                <div className="flex flex-col xl:flex-row gap-6 items-start w-full">
                 <div className="flex flex-col gap-6 flex-1 w-full min-w-0">
@@ -506,19 +525,37 @@ export default function App() {
                       </div>
                     </div>
 
-                    <div className="pt-6 mt-6 border-t border-[var(--glass-border)] hidden">
-                      <h3 className="text-[18px] font-semibold mb-2">GlassIconButton</h3>
-                      <p className="text-[var(--text-muted)] text-[14px] mb-6">Optimized for iconography with equal scale and circular borders.</p>
-                      <div className="flex gap-4 items-center flex-wrap">
-                        <GlassIconButton variant="primary">
-                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-                        </GlassIconButton>
-                        <GlassIconButton variant="secondary">
-                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-                        </GlassIconButton>
-                        <GlassIconButton variant="ghost">
-                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                        </GlassIconButton>
+                    <div className="pt-6 mt-6 border-t border-[var(--glass-border)]">
+                      <h4 className="text-[13px] uppercase tracking-widest text-[var(--text-muted)] mb-4 font-semibold">Icon Buttons & Groups</h4>
+                      <p className="text-[var(--text-muted)] text-[14px] mb-6">Optimized for iconography with circular borders, and ButtonGroups for visual connection.</p>
+                      <div className="flex gap-8 items-center flex-wrap">
+                        
+                        <div className="flex gap-3">
+                          <GlassIconButton variant="primary" aria-label="Add">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+                          </GlassIconButton>
+                          <GlassIconButton variant="secondary" aria-label="Settings">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                          </GlassIconButton>
+                          <GlassIconButton variant="ghost" aria-label="Close">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                          </GlassIconButton>
+                        </div>
+                        
+                        <div className="h-8 w-px bg-[var(--glass-border)]" />
+                        
+                        <GlassButtonGroup>
+                          <GlassIconButton variant="ghost" aria-label="Align Left">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="21" y1="6" x2="3" y2="6"/><line x1="15" y1="12" x2="3" y2="12"/><line x1="17" y1="18" x2="3" y2="18"/></svg>
+                          </GlassIconButton>
+                          <GlassIconButton variant="ghost" aria-label="Align Center">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="21" y1="6" x2="3" y2="6"/><line x1="18" y1="12" x2="6" y2="12"/><line x1="19" y1="18" x2="5" y2="18"/></svg>
+                          </GlassIconButton>
+                          <GlassIconButton variant="ghost" aria-label="Align Right">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="12" x2="9" y2="12"/><line x1="21" y1="18" x2="7" y2="18"/></svg>
+                          </GlassIconButton>
+                        </GlassButtonGroup>
+
                       </div>
                     </div>
                   </div>
@@ -965,6 +1002,113 @@ export default function App() {
                   <div className="pl-4"><span className="text-emerald-400">message</span>=<span className="text-amber-400">"Your application has been published."</span></div>
                   <div className="pl-4"><span className="text-emerald-400">type</span>=<span className="text-amber-400">"success"</span></div>
                   <div><span className="text-pink-400">/&gt;</span></div>
+                </div>
+              </div>
+            )}
+
+            {activePage === 'Playground' && (
+              <div className="flex flex-col gap-6 w-full animate-in fade-in zoom-in-95 duration-500 max-w-5xl mx-auto items-center">
+                <div className="text-center mb-6">
+                  <h2 className="text-[32px] font-bold tracking-tight mb-4 text-[var(--text-main)] bg-clip-text">Component Playground</h2>
+                  <p className="text-[var(--text-muted)] text-[16px] leading-relaxed max-w-2xl mx-auto">
+                    A canvas to explore the Liquid Glass UI component ecosystem working together.
+                  </p>
+                </div>
+                
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 w-full">
+                  {/* Playground Preview area - 8 cols */}
+                  <div className="lg:col-span-8 flex flex-col gap-8">
+                    {/* A complex widget showcasing components */}
+                    <div className="bg-[var(--glass-bg)] backdrop-blur-[24px] border border-[var(--glass-border)] rounded-[24px] p-6 sm:p-8 relative overflow-hidden shadow-[var(--glass-shadow)] flex flex-col gap-8">
+                      <div className="flex justify-between items-start">
+                        <div className="flex gap-4 items-center">
+                          <GlassAvatar size="lg" src="https://i.pravatar.cc/150?u=a042581f4e29026704d" />
+                          <div className="flex flex-col">
+                            <span className="text-[18px] font-semibold">Project Nebula</span>
+                            <span className="text-[13px] text-[var(--text-muted)]">Configuration Dashboard</span>
+                          </div>
+                        </div>
+                        <GlassBadge variant="success">Active</GlassBadge>
+                      </div>
+
+                      <GlassTabs 
+                        tabs={['Overview', 'Integrations', 'Access']} 
+                        activeTab="Overview" 
+                        onChange={() => {}} 
+                      />
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 p-1">
+                        <GlassInput label="Project Name" defaultValue="Nebula Alpha" />
+                        <GlassInput label="API Endpoint" defaultValue="https://api.nebula.dev/v1" />
+                      </div>
+
+                      <div className="flex flex-col gap-4">
+                        <span className="text-[12px] font-medium text-[var(--text-muted)]">Quick Actions</span>
+                        <div className="flex flex-wrap gap-4 items-center">
+                          <GlassButton variant="primary" LeftIcon={<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>}>Deploy Update</GlassButton>
+                          <GlassButton variant="secondary" loading={false}>Sync Data</GlassButton>
+                          <GlassButtonGroup>
+                            <GlassIconButton variant="ghost" aria-label="Pause">
+                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                            </GlassIconButton>
+                            <GlassIconButton variant="ghost" aria-label="Restart">
+                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                            </GlassIconButton>
+                          </GlassButtonGroup>
+                        </div>
+                      </div>
+
+                      <div className="h-px bg-[var(--glass-border)] w-full" />
+
+                      <div className="flex flex-col gap-4">
+                        <GlassSwitch label="Enable advanced analytics" checked={true} onChange={() => {}} />
+                        <GlassCheckbox label="Share crash reports" checked={true} onChange={() => {}} />
+                      </div>
+
+                      <GlassAlert type="info" title="System Maintenance">
+                        Scheduled downtime will occur on Saturday at 02:00 AM UTC for approximately 4 hours.
+                      </GlassAlert>
+                    </div>
+                  </div>
+
+                  {/* Playground Controls area - 4 cols */}
+                  <div className="lg:col-span-4 flex flex-col gap-6">
+                    <div className="bg-[var(--glass-bg)] backdrop-blur-[24px] border border-[var(--glass-border)] rounded-[24px] p-6 relative overflow-hidden shadow-[var(--glass-shadow)] flex flex-col gap-6">
+                      <h3 className="text-[16px] font-semibold">Theme Controls</h3>
+                      
+                      <div className="flex flex-col gap-4">
+                        <div className="flex justify-between items-center">
+                          <span className="text-[13px] text-[var(--text-muted)]">Mode</span>
+                          <GlassButtonGroup>
+                            <GlassIconButton variant={theme === 'dark' ? 'primary' : 'ghost'} onClick={toggleTheme}>
+                               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                            </GlassIconButton>
+                            <GlassIconButton variant={theme === 'light' ? 'primary' : 'ghost'} onClick={toggleTheme}>
+                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                            </GlassIconButton>
+                          </GlassButtonGroup>
+                        </div>
+                        
+                        <div className="h-px bg-[var(--glass-border)] w-full" />
+                        
+                        <div>
+                          <span className="text-[13px] text-[var(--text-muted)] block mb-3">System Utilities</span>
+                          <div className="flex flex-col gap-3">
+                            <GlassButton variant="secondary" onClick={() => setIsModalOpen(true)} className="w-full justify-start">Test Modal Rendering</GlassButton>
+                            <GlassButton variant="secondary" onClick={() => setIsToastOpen(true)} className="w-full justify-start">Test Toast Overlay</GlassButton>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                    
+                    <div className="bg-[#6366f1]/5 border border-[#6366f1]/20 rounded-[24px] p-6 relative overflow-hidden backdrop-blur-xl">
+                      <div className="absolute top-0 right-0 w-32 h-32 bg-[#6366f1] rounded-full blur-[60px] opacity-20 pointer-events-none" />
+                      <h4 className="text-[#6366f1] font-semibold text-[14px] mb-2 relative z-10">Export Code</h4>
+                      <p className="text-[13px] text-[var(--text-muted)] mb-4 relative z-10">Need this exact layout? Copy the generated code for your project.</p>
+                      <GlassButton variant="primary" className="w-full group" LeftIcon={<svg className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>}>Copy Layout</GlassButton>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
