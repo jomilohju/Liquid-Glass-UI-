@@ -122,6 +122,81 @@ function GlassInput({ label, placeholder, defaultValue, type = "text", className
   );
 }
 
+function GlassTextarea({ label, placeholder, defaultValue, className = '', rows = 4, ...props }: any) {
+  return (
+    <div className={`flex flex-col gap-2 ${className}`}>
+      {label && <label className="text-[12px] font-medium text-[var(--text-muted)]">{label}</label>}
+      <textarea 
+        className="bg-[var(--input-bg)] border border-[var(--glass-border)] rounded-xl px-4 py-3 text-[var(--text-main)] text-[14px] outline-none w-full focus:border-[#6366f1] focus:shadow-[0_0_0_4px_rgba(99,102,241,0.15)] hover:border-[#6366f1]/50 hover:shadow-[0_0_15px_rgba(99,102,241,0.1)] focus:hover:border-[#6366f1] transition-all placeholder:text-[var(--text-muted)] resize-y min-h-[80px]" 
+        placeholder={placeholder} 
+        defaultValue={defaultValue}
+        rows={rows}
+        {...props}
+      />
+    </div>
+  );
+}
+
+function GlassSwitch({ checked, onChange, label, className = '' }: any) {
+  return (
+    <label className={`flex items-center gap-3 cursor-pointer ${className}`}>
+      <div className="relative">
+        <input type="checkbox" className="sr-only" checked={checked} onChange={onChange} />
+        <div className={`block w-11 h-6 rounded-full border transition-all duration-300 ${checked ? 'bg-[#6366f1] border-[#6366f1]' : 'bg-[var(--input-bg)] border-[var(--glass-border)] hover:border-[var(--glass-border-hover)]'}`}></div>
+        <div className={`absolute left-[3px] top-[3px] bg-white w-4.5 h-4.5 rounded-full transition-all duration-300 transform shadow-sm ${checked ? 'translate-x-[20px]' : ''}`}></div>
+      </div>
+      {label && <span className="text-[13px] font-medium text-[var(--text-main)] select-none">{label}</span>}
+    </label>
+  );
+}
+
+function GlassCheckbox({ checked, onChange, label, className = '' }: any) {
+  return (
+    <label className={`flex items-center gap-3 cursor-pointer group ${className}`}>
+      <div className="relative flex items-center justify-center w-5 h-5">
+        <input type="checkbox" className="sr-only" checked={checked} onChange={onChange} />
+        <div className={`absolute inset-0 rounded-[6px] border transition-all duration-200 ${checked ? 'bg-[#6366f1] border-[#6366f1] shadow-[0_0_10px_rgba(99,102,241,0.3)]' : 'bg-[var(--input-bg)] border-[var(--glass-border)] group-hover:border-[#6366f1]/50'}`}></div>
+        <svg className={`relative w-3 h-3 text-white pointer-events-none transition-transform duration-200 ${checked ? 'scale-100 opacity-100' : 'scale-50 opacity-0'}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+      </div>
+      {label && <span className="text-[13px] font-medium text-[var(--text-main)] select-none">{label}</span>}
+    </label>
+  );
+}
+
+function GlassTabs({ tabs, activeTab, onChange, className = '' }: any) {
+  return (
+    <div className={`flex p-1 bg-[var(--input-bg)] backdrop-blur-[12px] border border-[var(--glass-border)] rounded-[14px] w-max ${className}`}>
+      {tabs.map((tab: string) => (
+        <button
+          key={tab}
+          onClick={() => onChange(tab)}
+          className={`px-5 py-2 rounded-[10px] text-[13px] font-medium transition-all duration-300 relative z-10 ${activeTab === tab ? 'text-[var(--text-main)] shadow-sm bg-[var(--secondary-btn-bg)] border border-[var(--glass-border-hover)]' : 'text-[var(--text-muted)] hover:text-[var(--text-main)] border border-transparent'}`}
+        >
+          {tab}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function GlassProgress({ value = 0, max = 100, className = '' }: any) {
+  const percentage = Math.min(Math.max(value, 0), max) / max * 100;
+  return (
+    <div className={`w-full h-2 bg-[var(--input-bg)] border border-[var(--glass-border)] rounded-full overflow-hidden ${className}`}>
+      <div 
+        className="h-full bg-gradient-to-r from-[#6366f1] to-[#c026d3] transition-all duration-500 ease-out relative"
+        style={{ width: `${percentage}%` }}
+      />
+    </div>
+  );
+}
+
+function GlassSkeleton({ className = '' }: any) {
+  return (
+    <div className={`animate-pulse bg-[var(--glass-border)] rounded-xl ${className}`} />
+  );
+}
+
 function GlassButton({ 
   variant = 'primary', 
   size = 'md', 
@@ -354,7 +429,10 @@ export default function App() {
                 className={`px-4 py-3 rounded-[10px] text-[14px] text-left transition-all ${activePage === 'Buttons' ? 'bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-main)] backdrop-blur-[10px]' : 'border border-transparent text-[var(--text-muted)] hover:bg-[var(--secondary-btn-hover)]'}`}>Buttons</button>
               <button 
                 onClick={() => setActivePage('Inputs')}
-                className={`px-4 py-3 rounded-[10px] text-[14px] text-left transition-all ${activePage === 'Inputs' ? 'bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-main)] backdrop-blur-[10px]' : 'border border-transparent text-[var(--text-muted)] hover:bg-[var(--secondary-btn-hover)]'}`}>Inputs</button>
+                className={`px-4 py-3 rounded-[10px] text-[14px] text-left transition-all ${activePage === 'Inputs' ? 'bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-main)] backdrop-blur-[10px]' : 'border border-transparent text-[var(--text-muted)] hover:bg-[var(--secondary-btn-hover)]'}`}>Form Elements</button>
+              <button 
+                onClick={() => setActivePage('Navigation')}
+                className={`px-4 py-3 rounded-[10px] text-[14px] text-left transition-all ${activePage === 'Navigation' ? 'bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-main)] backdrop-blur-[10px]' : 'border border-transparent text-[var(--text-muted)] hover:bg-[var(--secondary-btn-hover)]'}`}>Navigation</button>
               <button 
                 onClick={() => setActivePage('Data Display')}
                 className={`px-4 py-3 rounded-[10px] text-[14px] text-left transition-all ${activePage === 'Data Display' ? 'bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-main)] backdrop-blur-[10px]' : 'border border-transparent text-[var(--text-muted)] hover:bg-[var(--secondary-btn-hover)]'}`}>Data Display</button>
@@ -412,8 +490,17 @@ export default function App() {
                           <GlassButton variant="primary" RightIcon={<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>}>
                             Get Started
                           </GlassButton>
+                          <GlassButton variant="destructive" LeftIcon={<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>}>
+                            Delete
+                          </GlassButton>
                           <GlassButton variant="ghost" size="icon" aria-label="Settings">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                          </GlassButton>
+                          <GlassButton variant="secondary" size="icon" aria-label="Search">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                          </GlassButton>
+                          <GlassButton variant="primary" size="icon" aria-label="Add">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                           </GlassButton>
                         </div>
                       </div>
@@ -637,22 +724,51 @@ export default function App() {
             {activePage === 'Inputs' && (
               <div className="flex flex-col gap-6 w-full max-w-3xl">
                 <div className="bg-[var(--glass-bg)] backdrop-blur-[24px] border border-[var(--glass-border)] rounded-[24px] p-6 sm:p-8 relative overflow-hidden shadow-[var(--glass-shadow)] animate-in fade-in slide-in-from-bottom-2">
-                  <h2 className="text-[24px] font-semibold mb-2 text-[var(--text-main)]">GlassInput</h2>
-                  <p className="text-[var(--text-muted)] text-[15px] mb-8">Sleek, blur-backed input fields with volumetric focus states.</p>
+                  <h2 className="text-[24px] font-semibold mb-2 text-[var(--text-main)]">Form Elements</h2>
+                  <p className="text-[var(--text-muted)] text-[15px] mb-8">Sleek, blur-backed input fields, textareas, and controls with volumetric focus states.</p>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div className="flex flex-col gap-6">
-                      <GlassInput 
-                        label="Email Address"
-                        placeholder="you@example.com"
-                        type="email"
-                      />
-                      <GlassInput 
-                        label="Secure Password"
-                        placeholder="••••••••"
-                        type="password"
-                      />
+                  <div className="flex flex-col gap-10">
+                    <div>
+                      <h4 className="text-[13px] uppercase tracking-widest text-[var(--text-muted)] mb-4 font-semibold">Inputs & Textareas</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="flex flex-col gap-6">
+                          <GlassInput 
+                            label="Email Address"
+                            placeholder="you@example.com"
+                            type="email"
+                          />
+                          <GlassInput 
+                            label="Secure Password"
+                            placeholder="••••••••"
+                            type="password"
+                          />
+                        </div>
+                        <div className="flex flex-col gap-6">
+                          <GlassTextarea
+                            label="Bio"
+                            placeholder="Tell us about yourself..."
+                            rows={4}
+                          />
+                        </div>
+                      </div>
                     </div>
+
+                    <div className="h-px bg-[var(--glass-border)] w-full" />
+
+                    <div>
+                      <h4 className="text-[13px] uppercase tracking-widest text-[var(--text-muted)] mb-4 font-semibold">Checks & Toggles</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="flex flex-col gap-4">
+                          <GlassCheckbox label="Accept terms and conditions" checked={true} onChange={() => {}} />
+                          <GlassCheckbox label="Subscribe to newsletter" checked={false} onChange={() => {}} />
+                        </div>
+                        <div className="flex flex-col gap-4">
+                          <GlassSwitch label="Enable notifications" checked={true} onChange={() => {}} />
+                          <GlassSwitch label="Dark mode" checked={false} onChange={() => {}} />
+                        </div>
+                      </div>
+                    </div>
+
                   </div>
                 </div>
 
@@ -662,6 +778,42 @@ export default function App() {
                   <div className="pl-4"><span className="text-emerald-400">label</span>=<span className="text-amber-400">"Email Address"</span></div>
                   <div className="pl-4"><span className="text-emerald-400">type</span>=<span className="text-amber-400">"email"</span></div>
                   <div className="pl-4"><span className="text-emerald-400">placeholder</span>=<span className="text-amber-400">"you@example.com"</span></div>
+                  <div><span className="text-pink-400">/&gt;</span></div>
+                </div>
+              </div>
+            )}
+
+            {activePage === 'Navigation' && (
+              <div className="flex flex-col gap-6 w-full max-w-3xl">
+                <div className="bg-[var(--glass-bg)] backdrop-blur-[24px] border border-[var(--glass-border)] rounded-[24px] p-6 sm:p-8 relative overflow-hidden shadow-[var(--glass-shadow)] animate-in fade-in slide-in-from-bottom-2">
+                  <h2 className="text-[24px] font-semibold mb-2 text-[var(--text-main)]">Navigation</h2>
+                  <p className="text-[var(--text-muted)] text-[15px] mb-8">Intuitive routing and structuring components with glass aesthetics.</p>
+                  
+                  <div className="flex flex-col gap-8">
+                    <div>
+                      <h4 className="text-[13px] uppercase tracking-widest text-[var(--text-muted)] mb-4 font-semibold">Tabs</h4>
+                      <div className="flex flex-col gap-6">
+                        <GlassTabs 
+                          tabs={['General', 'Security', 'Billing', 'Notifications']} 
+                          activeTab="General" 
+                          onChange={() => {}} 
+                        />
+                         <GlassTabs 
+                          tabs={['Code', 'Issues', 'Pull Requests']} 
+                          activeTab="Issues" 
+                          onChange={() => {}} 
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Code Block Snippet */}
+                <div className="bg-[var(--code-bg)] rounded-xl p-5 font-mono text-[13px] leading-[1.6] text-indigo-400 border border-[var(--code-border)] animate-in fade-in slide-in-from-bottom-2 w-full overflow-x-auto">
+                  <div><span className="text-pink-400">&lt;GlassTabs</span></div>
+                  <div className="pl-4"><span className="text-emerald-400">tabs</span>=<span className="text-amber-400">&#123;['General', 'Security', 'Billing']&#125;</span></div>
+                  <div className="pl-4"><span className="text-emerald-400">activeTab</span>=<span className="text-amber-400">"General"</span></div>
+                  <div className="pl-4"><span className="text-emerald-400">onChange</span>=<span className="text-amber-400">&#123;handleTabChange&#125;</span></div>
                   <div><span className="text-pink-400">/&gt;</span></div>
                 </div>
               </div>
@@ -749,6 +901,37 @@ export default function App() {
                           <GlassSpinner size="lg" />
                           <span className="text-[11px] text-[var(--text-muted)] font-mono">lg</span>
                         </div>
+                      </div>
+                    </div>
+
+                    <div className="h-px bg-[var(--glass-border)] w-full" />
+                    
+                    <div>
+                      <h4 className="text-[13px] uppercase tracking-widest text-[var(--text-muted)] mb-4 font-semibold">Progress & Loading</h4>
+                      <div className="flex flex-col gap-6">
+                        <div className="flex flex-col gap-2">
+                          <div className="flex justify-between items-center text-[12px] font-medium text-[var(--text-main)] px-1">
+                            <span>Uploading package</span>
+                            <span>45%</span>
+                          </div>
+                          <GlassProgress value={45} />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="h-px bg-[var(--glass-border)] w-full" />
+                    
+                    <div>
+                      <h4 className="text-[13px] uppercase tracking-widest text-[var(--text-muted)] mb-4 font-semibold">Skeletons (Placeholders)</h4>
+                      <div className="flex flex-col gap-6">
+                        <div className="flex items-center gap-4">
+                          <GlassSkeleton className="w-12 h-12 rounded-full shrink-0" />
+                          <div className="flex flex-col gap-2 w-full">
+                            <GlassSkeleton className="w-1/3 h-4" />
+                            <GlassSkeleton className="w-2/3 h-3" />
+                          </div>
+                        </div>
+                        <GlassSkeleton className="w-full h-24" />
                       </div>
                     </div>
                   </div>
