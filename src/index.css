@@ -1,1 +1,53 @@
 @import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-color: #f8fafc;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --glass-bg: rgba(255, 255, 255, 0.6);
+    --glass-border: rgba(0, 0, 0, 0.06);
+    --glass-border-hover: rgba(0, 0, 0, 0.12);
+    --glass-shadow: rgba(0, 0, 0, 0.05);
+    --glass-shadow-hover: rgba(0, 0, 0, 0.1);
+    --code-bg: rgba(0, 0, 0, 0.04);
+    --code-border: rgba(0, 0, 0, 0.06);
+    --orb-1: #6366f1;
+    --orb-2: #c026d3;
+    --orb-opacity: 0.15;
+    --input-bg: rgba(255, 255, 255, 0.7);
+    --modal-overlay: rgba(255, 255, 255, 0.4);
+    --bg-grad-1: #e0e7ff;
+    --bg-grad-2: #f3e8ff; 
+    --bg-grad-3: #f8fafc;
+    --bg-grad-4: #f1f5f9;
+    --secondary-btn-bg: rgba(255, 255, 255, 0.6);
+    --secondary-btn-hover: rgba(255, 255, 255, 0.9);
+    --ghost-btn-hover: rgba(0, 0, 0, 0.04);
+  }
+
+  .theme-dark {
+    --bg-color: #030306;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --glass-bg: rgba(255, 255, 255, 0.04);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-border-hover: rgba(255, 255, 255, 0.2);
+    --glass-shadow: rgba(0, 0, 0, 0.6);
+    --glass-shadow-hover: rgba(0, 0, 0, 0.8);
+    --code-bg: rgba(0, 0, 0, 0.3);
+    --code-border: rgba(255, 255, 255, 0.05);
+    --orb-1: #6366f1;
+    --orb-2: #c026d3;
+    --orb-opacity: 0.2;
+    --input-bg: rgba(255, 255, 255, 0.04);
+    --modal-overlay: rgba(0, 0, 0, 0.4);
+    --bg-grad-1: #1e1b4b;
+    --bg-grad-2: #312e81;
+    --bg-grad-3: #030306;
+    --bg-grad-4: #000;
+    --secondary-btn-bg: rgba(255, 255, 255, 0.04);
+    --secondary-btn-hover: rgba(255, 255, 255, 0.08);
+    --ghost-btn-hover: rgba(255, 255, 255, 0.04);
+  }
+}
