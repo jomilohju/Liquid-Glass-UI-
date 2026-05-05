@@ -183,8 +183,8 @@ export default function App() {
             background: `radial-gradient(circle at 20% 20%, var(--bg-grad-1) 0%, transparent 40%), radial-gradient(circle at 80% 80%, var(--bg-grad-2) 0%, transparent 40%), radial-gradient(circle at 50% 50%, var(--bg-grad-3) 0%, var(--bg-grad-4) 100%)`
           }}
         />
-        <div className="absolute -top-[100px] -right-[100px] w-[400px] h-[400px] rounded-full blur-[100px] bg-[var(--orb-1)] transition-colors duration-1000 z-[1]" />
-        <div className="absolute -bottom-[100px] -left-[100px] w-[400px] h-[400px] rounded-full blur-[100px] bg-[var(--orb-2)] transition-colors duration-1000 z-[1]" />
+        <div className="absolute -top-[100px] -right-[100px] w-[400px] h-[400px] rounded-full blur-[100px] opacity-[var(--orb-opacity)] bg-[var(--orb-1)] transition-colors duration-1000 z-[1]" />
+        <div className="absolute -bottom-[100px] -left-[100px] w-[400px] h-[400px] rounded-full blur-[100px] opacity-[calc(var(--orb-opacity)*0.4)] bg-[var(--orb-2)] transition-colors duration-1000 z-[1]" />
       </div>
 
       <div className="relative z-10 flex flex-col h-full p-10 max-w-[1400px] mx-auto w-full">
@@ -252,92 +252,95 @@ export default function App() {
 
           <main className="flex flex-col gap-6 relative overflow-y-auto pb-20">
             {activePage === 'Buttons' && (
-              <>
-            {/* Showcased Card */}
-            <div className="bg-[var(--glass-bg)] backdrop-blur-[24px] border border-[var(--glass-border)] rounded-[24px] p-8 relative overflow-hidden shadow-[var(--glass-shadow)] animate-in fade-in slide-in-from-bottom-2">
-              <h2 className="text-[24px] font-semibold mb-2">GlassButton</h2>
-              <p className="text-[var(--text-muted)] text-[14px] mb-8">Highly customizable interactive surfaces with dynamic backdrop blur and refraction effects.</p>
+               <div className="flex flex-col xl:flex-row gap-6 items-start w-full">
+                <div className="flex flex-col gap-6 flex-1 w-full min-w-0">
+                  {/* Showcased Card */}
+                  <div className="bg-[var(--glass-bg)] backdrop-blur-[24px] border border-[var(--glass-border)] rounded-[24px] p-6 sm:p-8 relative overflow-hidden shadow-[var(--glass-shadow)] animate-in fade-in slide-in-from-bottom-2">
+                    <h2 className="text-[24px] font-semibold mb-2">GlassButton</h2>
+                    <p className="text-[var(--text-muted)] text-[14px] mb-8">Highly customizable interactive surfaces with dynamic backdrop blur and refraction effects.</p>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="flex flex-col gap-4">
-                  <span className="text-[12px] font-medium text-[var(--text-muted)]">Primary Variant</span>
-                  <button 
-                    onClick={() => setIsModalOpen(true)}
-                    className="py-3 px-6 rounded-xl border border-white/20 bg-[#6366f1] text-[var(--primary-btn-text)] text-[14px] font-semibold text-center shadow-[0_0_20px_rgba(99,102,241,0.15)] transition-all hover:bg-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2 focus:ring-offset-[var(--bg-color)]">
-                    Launch System
-                  </button>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                      <div className="flex flex-col gap-4 items-start">
+                        <span className="text-[12px] font-medium text-[var(--text-muted)]">Primary Variant</span>
+                        <button 
+                          onClick={() => setIsModalOpen(true)}
+                          className="py-3 px-6 rounded-xl border border-white/20 bg-[#6366f1] text-[var(--primary-btn-text)] text-[14px] font-semibold shadow-[0_0_20px_rgba(99,102,241,0.15)] transition-all hover:bg-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2 focus:ring-offset-[var(--bg-color)]">
+                          Launch System
+                        </button>
+                      </div>
+
+                      <div className="flex flex-col gap-4 items-start">
+                        <span className="text-[12px] font-medium text-[var(--text-muted)]">Secondary Variant</span>
+                        <button className="py-3 px-6 rounded-xl border border-[var(--glass-border)] bg-[var(--secondary-btn-bg)] text-[var(--text-main)] text-[14px] font-semibold transition-all hover:bg-[var(--secondary-btn-hover)]">
+                          View Metrics
+                        </button>
+                      </div>
+
+                      <div className="flex flex-col gap-4 items-start">
+                        <span className="text-[12px] font-medium text-[var(--text-muted)]">Ghost Variant</span>
+                        <button className="py-3 px-6 rounded-xl border border-transparent bg-transparent text-[var(--text-muted)] text-[14px] font-semibold transition-all hover:bg-[var(--ghost-btn-hover)] hover:text-[var(--text-main)] overflow-hidden">
+                          Dismiss
+                        </button>
+                      </div>
+                      
+                      <div className="flex flex-col gap-4 items-start w-full">
+                        <GlassInput 
+                          className="w-full max-w-[200px]"
+                          label="Input Field"
+                          placeholder="Search..."
+                          defaultValue="Interface"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="pt-6 mt-6 border-t border-[var(--glass-border)]">
+                      <h3 className="text-[18px] font-semibold mb-2">GlassIconButton</h3>
+                      <p className="text-[var(--text-muted)] text-[14px] mb-6">Optimized for iconography with equal scale and circular borders.</p>
+                      <div className="flex gap-4 items-center flex-wrap">
+                        <GlassIconButton variant="primary">
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+                        </GlassIconButton>
+                        <GlassIconButton variant="secondary">
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                        </GlassIconButton>
+                        <GlassIconButton variant="ghost">
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                        </GlassIconButton>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Code Block Snippet */}
+                  <div className="bg-[var(--code-bg)] rounded-xl p-5 font-mono text-[13px] leading-[1.6] text-indigo-400 border border-[var(--code-border)] w-full overflow-x-auto">
+                    <div><span className="text-pink-400">&lt;GlassButton</span></div>
+                    <div className="pl-4"><span className="text-emerald-400">variant</span>=<span className="text-amber-400">"primary"</span></div>
+                    <div className="pl-4"><span className="text-emerald-400">glow</span>=<span className="text-amber-400">&#123;true&#125;</span></div>
+                    <div className="pl-4"><span className="text-emerald-400">onClick</span>=<span className="text-amber-400">&#123;() =&gt; initialize()&#125;</span></div>
+                    <div><span className="text-pink-400">&gt;</span></div>
+                    <div className="pl-4 text-[var(--text-main)]">Launch Application</div>
+                    <div><span className="text-pink-400">&lt;/GlassButton&gt;</span></div>
+                  </div>
                 </div>
 
-                <div className="flex flex-col gap-4">
-                  <span className="text-[12px] font-medium text-[var(--text-muted)]">Secondary Variant</span>
-                  <button className="py-3 px-6 rounded-xl border border-[var(--glass-border)] bg-[var(--secondary-btn-bg)] text-[var(--text-main)] text-[14px] font-semibold text-center transition-all hover:bg-[var(--secondary-btn-hover)]">
-                    View Metrics
-                  </button>
-                </div>
-
-                <div className="flex flex-col gap-4">
-                  <span className="text-[12px] font-medium text-[var(--text-muted)]">Ghost Variant</span>
-                  <button className="py-3 px-6 rounded-xl border border-transparent bg-transparent text-[var(--text-muted)] text-[14px] font-semibold text-center transition-all hover:bg-[var(--ghost-btn-hover)] hover:text-[var(--text-main)]">
-                    Dismiss
-                  </button>
-                </div>
-
-                <div className="flex flex-col gap-4">
-                  <GlassInput 
-                    label="Input Field"
-                    placeholder="Search components..."
-                    defaultValue="Interface focus"
-                  />
+                {/* Floating Modal Showcase is now structured in flow on the right in large screens */}
+                <div className="w-full xl:w-[320px] shrink-0 bg-[var(--glass-bg)] backdrop-blur-[40px] border border-[var(--glass-border-hover)] rounded-[20px] p-6 shadow-[var(--glass-shadow-hover)] animate-in fade-in slide-in-from-bottom-4 xl:slide-in-from-right-4">
+                  <div className="flex justify-between items-start mb-4">
+                    <h3 className="text-[18px] font-semibold text-[var(--text-main)]">System Update</h3>
+                    <div className="w-4 h-4 bg-indigo-500/20 rounded-full animate-pulse border border-indigo-500/30"></div>
+                  </div>
+                  <p className="text-[13px] text-[var(--text-muted)] leading-[1.5] mb-6">
+                    The liquid glass engine is now ready to compile your new library structure. Proceed with the deployment?
+                  </p>
+                  <div className="flex flex-col gap-3">
+                    <button className="w-full py-2.5 px-4 rounded-xl border border-white/20 bg-[#6366f1] text-[var(--primary-btn-text)] text-[13px] font-semibold shadow-[0_0_20px_rgba(99,102,241,0.15)] transition-all hover:bg-indigo-400">
+                      Confirm
+                    </button>
+                    <button className="w-full py-2.5 px-4 rounded-xl border border-[var(--glass-border)] bg-[var(--secondary-btn-bg)] text-[var(--text-main)] text-[13px] font-semibold transition-all hover:bg-[var(--secondary-btn-hover)]">
+                      Cancel
+                    </button>
+                  </div>
                 </div>
               </div>
-
-              <div className="pt-6 mt-4 border-t border-[var(--glass-border)]">
-                <h3 className="text-[18px] font-semibold mb-2">GlassIconButton</h3>
-                <p className="text-[var(--text-muted)] text-[14px] mb-6">Optimized for iconography with equal padding and circular borders.</p>
-                <div className="flex gap-4 items-center">
-                  <GlassIconButton variant="primary">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-                  </GlassIconButton>
-                  <GlassIconButton variant="secondary">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-                  </GlassIconButton>
-                  <GlassIconButton variant="ghost">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                  </GlassIconButton>
-                </div>
-              </div>
-            </div>
-
-            {/* Code Block Snippet */}
-            <div className="bg-[var(--code-bg)] rounded-xl p-5 font-mono text-[13px] leading-[1.6] text-indigo-400 border border-[var(--code-border)]">
-              <div><span className="text-pink-400">&lt;GlassButton</span></div>
-              <div className="pl-4"><span className="text-emerald-400">variant</span>=<span className="text-amber-400">"primary"</span></div>
-              <div className="pl-4"><span className="text-emerald-400">glow</span>=<span className="text-amber-400">&#123;true&#125;</span></div>
-              <div className="pl-4"><span className="text-emerald-400">onClick</span>=<span className="text-amber-400">&#123;() =&gt; initialize()&#125;</span></div>
-              <div><span className="text-pink-400">&gt;</span></div>
-              <div className="pl-4 text-[var(--text-main)]">Launch Application</div>
-              <div><span className="text-pink-400">&lt;/GlassButton&gt;</span></div>
-            </div>
-
-            {/* Floating Modal Showcase */}
-            <div className="hidden lg:block absolute top-10 right-0 2xl:right-10 w-[300px] bg-[var(--glass-bg)] backdrop-blur-[40px] border border-[var(--glass-border-hover)] rounded-[20px] p-6 z-10 shadow-[var(--glass-shadow-hover)] animate-in fade-in slide-in-from-right-4">
-              <div className="flex justify-between items-start mb-4">
-                <h3 className="text-[18px] font-semibold">System Update</h3>
-                <div className="w-4 h-4 bg-indigo-500/20 rounded-full"></div>
-              </div>
-              <p className="text-[13px] text-[var(--text-muted)] leading-[1.5] mb-6">
-                The liquid glass engine is now ready to compile your new library structure. Proceed with the deployment?
-              </p>
-              <div className="flex gap-3">
-                <button className="flex-1 py-2 px-3 rounded-xl border border-white/20 bg-[#6366f1] text-[var(--primary-btn-text)] text-[12px] font-semibold text-center shadow-[0_0_20px_rgba(99,102,241,0.15)] transition-all hover:bg-indigo-400">
-                  Confirm
-                </button>
-                <button className="flex-1 py-2 px-3 rounded-xl border border-[var(--glass-border)] bg-[var(--secondary-btn-bg)] text-[var(--text-main)] text-[12px] font-semibold text-center transition-all hover:bg-[var(--secondary-btn-hover)]">
-                  Cancel
-                </button>
-              </div>
-            </div>
-            </>
             )}
 
             {activePage === 'Introduction' && (
@@ -465,15 +468,21 @@ export default function App() {
                 <div className="flex flex-col gap-6">
                   <div className="flex flex-col gap-4">
                     <span className="text-[12px] font-medium text-[var(--text-muted)]">Interactive Demo</span>
-                    <GlassCard 
-                      title="Project Alpha" 
-                      description="This is an internal prototype of the new rendering engine. It uses web workers to offload heavy calculations."
-                      className="max-w-md"
-                    >
-                      <button className="py-2 px-4 mt-2 rounded-xl border border-[var(--glass-border)] bg-[var(--secondary-btn-bg)] text-[var(--text-main)] text-[13px] font-semibold text-center transition-all hover:bg-[var(--secondary-btn-hover)]">
-                        View Details
-                      </button>
-                    </GlassCard>
+                    <div className="relative p-8 sm:p-12 rounded-2xl overflow-hidden flex items-center justify-center border border-[var(--glass-border)] bg-[var(--bg-color)]">
+                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,var(--orb-1)_0%,transparent_60%)] opacity-20" />
+                      <div className="absolute top-0 right-0 w-32 h-32 bg-[#6366f1] rounded-full blur-3xl opacity-30" />
+                      <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#c026d3] rounded-full blur-3xl opacity-30" />
+                      
+                      <GlassCard 
+                        title="Project Alpha" 
+                        description="This is an internal prototype of the new rendering engine. It uses web workers to offload heavy calculations."
+                        className="max-w-md w-full relative z-10 !shadow-2xl"
+                      >
+                        <button className="py-2.5 px-5 mt-4 rounded-xl border border-[var(--glass-border)] bg-[var(--secondary-btn-bg)] text-[var(--text-main)] text-[13px] font-semibold text-center transition-all hover:bg-[var(--secondary-btn-hover)] hover:shadow-lg">
+                          View Details
+                        </button>
+                      </GlassCard>
+                    </div>
                   </div>
                 </div>
               </div>
