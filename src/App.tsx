@@ -93,7 +93,7 @@ function GlassModal({ isOpen, onClose, title, children }: { isOpen: boolean; onC
 
 function GlassCard({ title, description, children, className = '' }: { title?: string; description?: string; children?: React.ReactNode; className?: string }) {
   return (
-    <div className={`bg-white/[0.04] backdrop-blur-[24px] border border-white/10 rounded-[24px] p-8 shadow-[0_20px_60px_rgba(0,0,0,0.6)] relative overflow-hidden ${className}`}>
+    <div className={`bg-white/[0.04] backdrop-blur-[24px] border border-white/10 rounded-[24px] p-8 shadow-[0_20px_60px_rgba(0,0,0,0.6)] relative overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_25px_65px_rgba(0,0,0,0.8)] hover:border-white/20 ${className}`}>
       {(title || description) && (
         <div className="mb-6">
           {title && <h3 className="text-[20px] font-semibold text-[#f8fafc] mb-1">{title}</h3>}
@@ -111,12 +111,31 @@ function GlassInput({ label, placeholder, defaultValue, type = "text", className
       {label && <label className="text-[12px] font-medium text-[#94a3b8]">{label}</label>}
       <input 
         type={type}
-        className="bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3 text-white text-[14px] outline-none w-full focus:border-[#6366f1] focus:shadow-[0_0_0_4px_rgba(99,102,241,0.15)] transition-all placeholder:text-white/30" 
+        className="bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3 text-white text-[14px] outline-none w-full focus:border-[#6366f1] focus:shadow-[0_0_0_4px_rgba(99,102,241,0.15)] hover:border-[#6366f1]/50 hover:shadow-[0_0_15px_rgba(99,102,241,0.1)] focus:hover:border-[#6366f1] transition-all placeholder:text-white/30" 
         placeholder={placeholder} 
         defaultValue={defaultValue}
         {...props}
       />
     </div>
+  );
+}
+
+function GlassIconButton({ className = '', variant = 'secondary', onClick, children, ...props }: any) {
+  const baseClasses = "w-10 h-10 rounded-full flex items-center justify-center transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#030306] flex-shrink-0";
+  const variants = {
+    primary: "bg-[#6366f1] border border-white/20 text-white shadow-[0_0_20px_rgba(99,102,241,0.15)] hover:bg-indigo-400 focus:ring-indigo-400",
+    secondary: "bg-white/[0.04] border border-white/10 text-[#f8fafc] hover:bg-white/[0.08] focus:ring-white/20 focus:text-white",
+    ghost: "bg-transparent border border-transparent text-[#94a3b8] hover:bg-white/[0.04] hover:text-[#f8fafc] focus:ring-white/20"
+  };
+
+  return (
+    <button 
+      className={`${baseClasses} ${variants[variant as keyof typeof variants]} ${className}`}
+      onClick={onClick}
+      {...props}
+    >
+      {children}
+    </button>
   );
 }
 
@@ -249,6 +268,22 @@ export default function App() {
                     placeholder="Search components..."
                     defaultValue="Interface focus"
                   />
+                </div>
+              </div>
+
+              <div className="pt-6 mt-4 border-t border-white/10">
+                <h3 className="text-[18px] font-semibold mb-2">GlassIconButton</h3>
+                <p className="text-[#94a3b8] text-[14px] mb-6">Optimized for iconography with equal padding and circular borders.</p>
+                <div className="flex gap-4 items-center">
+                  <GlassIconButton variant="primary">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+                  </GlassIconButton>
+                  <GlassIconButton variant="secondary">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                  </GlassIconButton>
+                  <GlassIconButton variant="ghost">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                  </GlassIconButton>
                 </div>
               </div>
             </div>
